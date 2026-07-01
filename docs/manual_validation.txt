@@ -1,0 +1,65 @@
+Purpose:
+This document contains the manually calculated ground-truth values used to validate the Finance AI Assistant's dashboard and AI-generated financial analysis.
+
+Finance AI Assistant
+
+Manual Validation
+
+Dataset:
+sample_transactions.csv
+
+Manual Analysis
+
+1. Total Income
+257,400
+
+2. Total Expenses
+160,883
+
+3. Net Savings
+96,517
+
+4. Savings Rate
+37.5%
+
+5. Largest Spending Category
+Shopping
+Total: 62,200
+
+6. Highest Spending Month
+January 2026
+Total Expenses: 48,665
+
+7. Largest Expense
+
+January
+6,500 – Bata
+
+February
+4,200 + 4,200 = 8,400
+Locations:
+- Bashundhara Shopping
+- Shwapno
+
+March
+6,500 – Bata
+
+April
+6,500 – Electronics Store
+
+8. Compare March vs April
+
+March Expenses:
+39,943
+
+April Expenses:
+33,139
+
+Difference:
+April spending decreased by 6,804.
+
+Manual Review Time:
+60 minutes
+
+Evaluator:
+Self-evaluation
