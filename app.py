@@ -28,7 +28,6 @@ from src.chat import (
     ask_finance_ai,
     clear_chat,
     get_starter_questions,
-    is_ai_available,
 )
 
 # ==========================================================
@@ -806,16 +805,6 @@ def render_chat() -> None:
     with tab_chat:
 
         st.header("💬 AI Finance Assistant")
-        if not is_ai_available():
-            st.warning(
-        """
-        ### AI Chat unavailable in this hosted demo
-        # This project uses a **locally hosted Ollama model (Qwen 2.5:3B)**.
-        # The Dashboard, Transactions, and Analytics features remain fully functional.
-        # To use the AI Assistant, run the project locally following the README instructions.
-        # """
-        )
-            return
 
         st.caption(
             "Ask questions about your transactions, spending patterns, monthly summaries, "

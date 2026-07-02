@@ -28,33 +28,50 @@ from __future__ import annotations
 
 import re
 
+from langchain_ollama import ChatOllama
+
+from langchain_core.messages import (
+    AIMessage,
+    HumanMessage,
+    SystemMessage,
+)
+
+from src.agent_tools import (
+    set_dataframe,
+    get_category_total_tool,
+    get_monthly_summary_tool,
+    compare_months_tool,
+    find_top_transactions_tool,
+)
+
+
 # =====================================================
-# Ollama Availability
+# Configuration
 # =====================================================
 
-AI_AVAILABLE = False
-AI_ERROR = None
+MODEL_NAME = "qwen2.5:3b"
 
-try:
-    from langchain_ollama import ChatOllama
+TEMPERATURE = 0
 
-    MODEL_NAME = "qwen2.5:3b"
-    TEMPERATURE = 0
+MAX_HISTORY = 12
 
-    llm = ChatOllama(
-        model=MODEL_NAME,
-        temperature=TEMPERATURE,
-    )
+LATEST_MONTH_KEYWORDS = {
+    "latest",
+    "last",
+    "recent",
+    "current",
+}
 
-    AI_AVAILABLE = True
 
-except Exception as e:
-    ChatOllama = None
-    llm = None
-    AI_ERROR = str(e)
+# =====================================================
+# Create LLM
+# =====================================================
 
-    MODEL_NAME = "qwen2.5:3b"
-    TEMPERATURE = 0
+llm = ChatOllama(
+    model=MODEL_NAME,
+    temperature=TEMPERATURE,
+)
+
 
 # =====================================================
 # Prompts
@@ -819,9 +836,6 @@ def ask_finance_ai(question: str) -> dict:
 # Chat Utilities
 # =====================================================
 
-def is_ai_available() -> bool:
-    """Return whether Ollama is available."""
-    return AI_AVAILABLE
 def clear_chat():
     """
     Clear conversation history.
