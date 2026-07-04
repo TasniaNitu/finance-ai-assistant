@@ -1,3 +1,7 @@
+# Finance AI Assistant
+
+![Demo](demo.gif)
+
 ## Performance Evaluation
 
 The application was evaluated using a manually verified bank statement containing **179 transactions**. All financial metrics produced by the application were compared against independently calculated ground-truth values.
@@ -47,3 +51,5 @@ Upload a CSV bank statement to automatically generate financial summaries, inter
 ## AI Chat
 
 ![AI Chat](screenshots/ai_chat.png)
+
+Note: The AI chat uses a local Ollama server (qwen2.5:3b). Dashboard and transaction analysis can run normally, but the AI assistant requires Ollama to be installed and running locally.
