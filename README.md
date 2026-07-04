@@ -127,11 +127,11 @@ The application was evaluated using a manually verified bank statement containin
 | Dataset | Demo bank statement (179 transactions) |
 | Metrics Evaluated | 8 |
 | Manual Analysis Time | ~60 minutes |
-| Application Processing Time | 3.18 seconds (average of 3 runs on the demo dataset) |
+| Application Analysis Time | 3 minutes 57 seconds (average of 2 runs on the demo dataset) |
 | Accuracy | 100% |
-| Time Reduction | ~99.9% faster than manual analysis |
+| Time Reduction | ~15× faster than manual analysis |
 
-The application produced identical results to the manually verified calculations while reducing the analysis time from approximately **60 minutes** to **3.18 seconds**.
+The application produced identical results to the manually verified calculations while reducing the analysis time from approximately **60 minutes** to **3 minutes 57 seconds**, representing an improvement of approximately **15×** for the evaluated workflow.
 
 ## Future Improvements
 
