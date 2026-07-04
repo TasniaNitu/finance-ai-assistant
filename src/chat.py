@@ -165,7 +165,7 @@ Month-to-month comparison data: {result}
 Write a direct, clear comparison (under 120 words) that:
 - States in plain words which month had higher spending and by how much
 - Lists both months' totals as bullet points
-- Interprets whether the spending trend is improving
+- Interprets whether the spending trend is improving or getting worse
 - If spending went up, suggests one specific area to review
 - Ends with a follow-up question
 
@@ -307,8 +307,43 @@ def _get_latest_month() -> str | None:
 
 
 # =====================================================
-# Data Context Builder
+# Last Two Months Helper
 # =====================================================
+
+def _get_last_two_months() -> tuple[str, str] | None:
+    """
+    Return the two most recent YYYY-MM periods
+    present in the loaded DataFrame.
+
+    Used by _run_financial_tool() to power comparison
+    questions like "Compare my monthly spending" that
+    contain no explicit month strings.
+
+    Returns None if:
+    - No DataFrame has been loaded yet.
+    - Fewer than two distinct months exist in the data.
+    - Any unexpected error occurs.
+    """
+
+    if _current_df is None:
+        return None
+
+    try:
+
+        months = sorted(
+            _current_df["month"].unique().tolist()
+        )
+
+        if len(months) < 2:
+            return None
+
+        return months[-2], months[-1]
+
+    except Exception:
+        return None
+
+
+
 
 def _build_data_context() -> str | None:
     """
@@ -576,22 +611,47 @@ def _run_financial_tool(
 
     # -------------------------------------------------
     # Compare Months
+    #
+    # Two paths:
+    #
+    # 1. Explicit months — user typed two YYYY-MM strings:
+    #    "Compare 2026-03 and 2026-04"
+    #    "Is March better than 2026-04?"
+    #
+    # 2. Auto-detect — user said "compare" / "difference"
+    #    but gave no months:
+    #    "Compare my monthly spending."
+    #    "Compare my last two months."
+    #    "How does my spending compare month to month?"
+    #
+    #    In this case the two most recent months in the
+    #    dataset are used automatically.
     # -------------------------------------------------
 
-    if (
-        len(months) >= 2
-        and (
-            "compare" in question_lower
-            or "difference" in question_lower
-            or "more than" in question_lower
-            or "less than" in question_lower
-        )
-    ):
+    compare_intent = (
+        "compare" in question_lower
+        or "difference" in question_lower
+        or "more than" in question_lower
+        or "less than" in question_lower
+    )
+
+    if compare_intent:
+
+        if len(months) >= 2:
+            month1, month2 = months[0], months[1]
+
+        else:
+            last_two = _get_last_two_months()
+
+            if last_two is None:
+                return False, "", None
+
+            month1, month2 = last_two
 
         result = compare_months_tool.invoke(
             {
-                "month1": months[0],
-                "month2": months[1],
+                "month1": month1,
+                "month2": month2,
             }
         )
 
@@ -750,7 +810,7 @@ STARTER_QUESTIONS = [
     "Where can I save the most money?",
     "How much did I spend on Food & Dining?",
     "Give me my latest monthly summary.",
-    "Compare my spending in 2026-03 and 2026-04.",
+    "Compare my monthly spending.",
     "How can I reduce my spending?",
 ]
 
